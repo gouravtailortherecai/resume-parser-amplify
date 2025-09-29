@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+httpx
+pdfplumber
+python-docx
+pydantic
+asyncpg
+boto3
