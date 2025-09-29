@@ -5,11 +5,13 @@ from typing import Optional
 import httpx
 import pdfplumber
 import docx
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Body
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import asyncpg
 import datetime
 import boto3
+
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 GROQ_API_URL = os.environ.get("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
@@ -31,6 +33,15 @@ s3_client = boto3.client(
 )
 
 app = FastAPI(title="Resume Parser with S3 + user_id")
+
+# ✅ Add CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],   # change "*" to your frontend domain for better security
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Database pool
 db_pool = None
